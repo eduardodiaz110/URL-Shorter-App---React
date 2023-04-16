@@ -33,7 +33,7 @@ export const HomePage: React.FC<{}>=()=>{
     const agregarUrlcont = (url: urlItem) => {
             const urlExistente = urls.find((u) => u.urlinput === url.urlinput);
             if (urlExistente) {
-            return alert(`La URL "${url.urlinput}" ya existe en el array`);
+            return alert(`La URL "${url.urlinput}" ya fue ingresada previamente.`);
 
             }
 
