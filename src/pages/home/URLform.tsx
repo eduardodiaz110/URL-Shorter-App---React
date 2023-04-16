@@ -60,7 +60,7 @@ const handleSubmit = (e: React.FormEvent<HTMLInputElement>) =>{
             })
             .catch(error => console.log("La URL ingresada no es válida."));
     } else {
-        alert("La URL ingresada no es válida2."); // Si la URL no es válida, muestra un mensaje de error
+        alert("La URL ingresada no es válida."); // Si la URL no es válida, muestra un mensaje de error
     }
 }
 
