@@ -29,32 +29,39 @@ const seturlInput = (e: React.ChangeEvent<HTMLInputElement>) =>{
 const handleSubmit = (e: React.FormEvent<HTMLInputElement>) =>{
     e.preventDefault();
 
-    const url = 'https://api.shrtco.de/v2/shorten?url='+ inputData.URLI; // cambia esta URL por la de tu API
+    const urlRegex = /^((ftp|http|https):\/\/)?[\w-]+(\.[\w-]+)+(\.(com|org|net|gov|mx))?(\/\S*)?$/; // Expresión regular para validar una URL sin protocolo
+    const urlWithProtocol = /^((ftp|http|https):\/\/)/; // Expresión regular para verificar si la URL ya incluye un protocolo
+    const url = inputData.URLI.trim(); // Eliminar espacios en blanco al principio y al final de la URL
+    let finalUrl; // Variable para almacenar la URL con el protocolo agregado
 
-    const urlContainer ={
-        id: uuidv4(),
-        urlinput: inputData.URLI,
-        urloutput: "",
-
-
+    // Si la URL no incluye un protocolo, agregar "http://" como predeterminado
+    if (!urlWithProtocol.test(url)) {
+        finalUrl = "http://" + url;
+    } else {
+        finalUrl = url;
     }
 
+    const urlIsValid = urlRegex.test(finalUrl); // Verifica si la URL es válida
 
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
+    if (urlIsValid) { // Si la URL es válida, hace la solicitud fetch
+        const urlContainer ={
+            id: uuidv4(),
+            urlinput: inputData.URLI,
+            urloutput: "",
+        }
 
-            const shortcut=data;
-            urlContainer.urloutput =shortcut.result.short_link;
-            props.onSubmit(urlContainer)
-
-
-        })
-
-        .catch(error => console.error(error));
-
-
-
+        fetch('https://api.shrtco.de/v2/shorten?url=' + finalUrl)
+            .then(response => response.json())
+            .then(data => {
+                const shortcut=data;
+                urlContainer.urloutput =shortcut.result.short_link;
+                props.onSubmit(urlContainer)
+                setInputData({ URLI: "" }); // Limpiar el valor del campo de texto
+            })
+            .catch(error => console.log("La URL ingresada no es válida."));
+    } else {
+        alert("La URL ingresada no es válida2."); // Si la URL no es válida, muestra un mensaje de error
+    }
 }
 
 
@@ -79,7 +86,7 @@ return(
 
       },
     }}>
-<TextField  onChange={seturlInput} required name="URLI" margin="normal" fullWidth type="text"  placeholder="Ingresa Aqui el Link" sx={{
+<TextField  onChange={seturlInput}   value={inputData.URLI} required name="URLI" margin="normal" fullWidth type="text"  placeholder="Ingresa Aqui el Link" sx={{
     backgroundColor:"white", 
     mb:"15px", 
     borderRadius:"15px",
