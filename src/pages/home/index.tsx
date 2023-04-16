@@ -67,7 +67,7 @@ export const HomePage: React.FC<{}>=()=>{
                   },
                 }} >
                 <Grid container>
-                    <Grid item xs={12} lg={6} sx={{
+                    <Grid item xs={12} md={6} lg={6} sx={{
                          [theme.breakpoints.down('lg')]: {
                             padding: '0px 0px 50px 0px',
                           },
@@ -83,7 +83,7 @@ export const HomePage: React.FC<{}>=()=>{
                         <Button className="botongrande" >Get Started</Button>
 
                     </Grid>
-                    <Grid item xs={12} lg={6}>
+                    <Grid item xs={12} md={6} lg={6}>
                     <img width="100%" src={require("../../images/illustration-working.svg").default} alt="Descripción de la imagen" />
                     </Grid>
 
